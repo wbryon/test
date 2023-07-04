@@ -119,17 +119,17 @@ class BookingServiceIntegrationTest {
     }
 
     @Test
-    void create_itemIsInvalid() {
+    void shouldNotCreateIfItemIsUnavailable() {
         assertThrows(WrongRequestException.class, () -> bookingService.create(createdBooker2.getId(), bookingWithUnavailableItem));
     }
 
     @Test
-    void create_BookerIsOwner() {
+    void shouldNotCreateIfBookerIsOwner() {
         assertThrows(NotFoundException.class, () -> bookingService.create(createdOwner.getId(), bookingWithUnavailableItem));
     }
 
     @Test
-    void getById() {
+    void shouldFindBookingById() {
         BookingDto actual = bookingService.findBookingById(createdOwner.getId(), createdBooking.getId());
 
         assertNotNull(actual);
@@ -139,12 +139,12 @@ class BookingServiceIntegrationTest {
     }
 
     @Test
-    void getById_UserISNotOwnerOrBooker() {
+    void shouldNotFindBookingByIdIfUserIsNotOwnerOrBooker() {
         assertThrows(NotFoundException.class, () -> bookingService.findBookingById(createdBooker2.getId(), createdBooking.getId()));
     }
 
     @Test
-    void getAllByOwner() {
+    void shouldGetWaitingBookingsByOwner() {
         List<BookingDto> bookings = bookingService.getAllBookingsByOwner(createdOwner.getId(),
                 "WAITING", 0, 10);
 
@@ -154,7 +154,7 @@ class BookingServiceIntegrationTest {
     }
 
     @Test
-    void getAllByOwner_All() {
+    void shouldGetAllBookingsByOwner() {
         List<BookingDto> bookings = bookingService.getAllBookingsByOwner(createdOwner.getId(),
                 "ALL", 0, 10);
 
@@ -165,7 +165,7 @@ class BookingServiceIntegrationTest {
     }
 
     @Test
-    void getAllByOwner_Past() {
+    void shouldGetPastBookingsByOwner() {
         List<BookingDto> bookings = bookingService.getAllBookingsByOwner(createdOwner.getId(),
                 "PAST", 0, 10);
         assertNotNull(bookings);
@@ -174,7 +174,7 @@ class BookingServiceIntegrationTest {
     }
 
     @Test
-    void getAllByOwner_Current() {
+    void shouldGetCurrentBookingsByOwner() {
         List<BookingDto> bookings = bookingService.getAllBookingsByOwner(createdOwner.getId(),
                 "CURRENT", 0, 10);
         assertNotNull(bookings);
@@ -183,7 +183,7 @@ class BookingServiceIntegrationTest {
     }
 
     @Test
-    void getAllByOwner_Future() {
+    void shouldGetFutureBookingsByOwner() {
         List<BookingDto> bookings = bookingService.getAllBookingsByOwner(createdOwner.getId(),
                 "FUTURE", 0, 10);
         assertNotNull(bookings);
@@ -191,7 +191,7 @@ class BookingServiceIntegrationTest {
     }
 
     @Test
-    void getAllByOwner_Rejected() {
+    void shouldGetRejectedBookingsByOwner() {
         List<BookingDto> bookings = bookingService.getAllBookingsByOwner(createdOwner.getId(),
                 "REJECTED", 0, 10);
         assertNotNull(bookings);
@@ -200,20 +200,20 @@ class BookingServiceIntegrationTest {
     }
 
     @Test
-    void getAllByOwner_Unsupported() {
+    void shouldNotGetAllBookingsByOwnerWithUnknownState() {
         assertThrows(WrongRequestException.class, () -> bookingService.getAllBookingsByOwner(createdBooker.getId(),
                 "someState", 0, 10));
     }
 
     @Test
-    void getAllByBooker_IsUnsupportedState() {
+    void shouldNotGetAllBookingsByBookerWithUnknownState() {
 
         assertThrows(WrongRequestException.class, () -> bookingService.getAllBookingsByBooker(createdBooker.getId(),
                 "someState", 0, 10));
     }
 
     @Test
-    void getAllByBooker_waiting() {
+    void shouldGetWaitingBookingsByBooker() {
         List<BookingDto> bookings = bookingService.getAllBookingsByBooker(createdBooker.getId(),
                 "WAITING", 0, 10);
 
@@ -224,7 +224,7 @@ class BookingServiceIntegrationTest {
     }
 
     @Test
-    void getAllByBooker_All() {
+    void shouldGetAllBookingsByBooker() {
         List<BookingDto> bookings = bookingService.getAllBookingsByBooker(createdBooker.getId(),
                 "ALL", 0, 10);
 
@@ -235,7 +235,7 @@ class BookingServiceIntegrationTest {
     }
 
     @Test
-    void getAllByBooker_past() {
+    void shouldGetPastBookingsByBooker() {
         List<BookingDto> bookings = bookingService.getAllBookingsByBooker(createdBooker2.getId(),
                 "PAST", 0, 10);
 
@@ -245,7 +245,7 @@ class BookingServiceIntegrationTest {
     }
 
     @Test
-    void getAllByBooker_Rejected() {
+    void shouldGetRejectedBookingsByBooker() {
         List<BookingDto> bookings = bookingService.getAllBookingsByBooker(createdBooker2.getId(),
                 "REJECTED", 0, 10);
         assertNotNull(bookings);
@@ -254,7 +254,7 @@ class BookingServiceIntegrationTest {
     }
 
     @Test
-    void getAllByBooker_Current() {
+    void shouldGetCurrentBookingsByBooker() {
         List<BookingDto> bookings = bookingService.getAllBookingsByBooker(createdBooker2.getId(),
                 "CURRENT", 0, 10);
         assertNotNull(bookings);
@@ -263,7 +263,7 @@ class BookingServiceIntegrationTest {
     }
 
     @Test
-    void getAllByBooker_future() {
+    void shouldGetFutureBookingsByBooker() {
         List<BookingDto> bookings = bookingService.getAllBookingsByBooker(createdBooker.getId(),
                 "FUTURE", 0, 10);
 
@@ -273,33 +273,33 @@ class BookingServiceIntegrationTest {
     }
 
     @Test
-    void getAllByBooker_isUserIncorrect() {
+    void shouldNotGetAllBookingsByBookerIfUnknownUser() {
         assertThrows(NotFoundException.class, () ->
                 bookingService.getAllBookingsByBooker(999L, Status.WAITING.toString(), 0, 10));
     }
 
     @Test
-    void approvingByOwner_isValidApprovedTrue() {
+    void shouldUpdateBooking() {
         BookingDto actual
                 = bookingService.update(createdOwner.getId(), createdBooking.getId(), true);
         assertEquals(actual.getStatus(), Status.APPROVED);
     }
 
     @Test
-    void approvingByOwner_isValidApprovedFalse() {
+    void shouldUpdateBookingIfNotApproved() {
         BookingDto actual
                 = bookingService.update(createdOwner.getId(), createdBooking.getId(), false);
         assertEquals(actual.getStatus(), Status.REJECTED);
     }
 
     @Test
-    void approvingByOwner_isApprovedInvalid() {
+    void shouldNotUpdateBookingIfApprovedIsNull() {
         assertThrows(WrongRequestException.class,
                 () -> bookingService.update(createdOwner.getId(), createdBooking.getId(), null));
     }
 
     @Test
-    void approvingByOwner_userIsNotOwner() {
+    void shouldNotUpdateBookingIfUserIsNotOwner() {
         assertThrows(NotFoundException.class,
                 () -> bookingService.update(createdBooker2.getId(), createdBooking.getId(), true));
     }

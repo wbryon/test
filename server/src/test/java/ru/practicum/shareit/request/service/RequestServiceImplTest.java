@@ -46,7 +46,7 @@ class RequestServiceImplTest {
     }
 
     @Test
-    void getById() {
+    void findById() {
         RequestDto actual = requestService.findByUserIdAndRequestId(createdUser.getId(), createdRequestReturnDto.getId());
 
         assertNotNull(actual);
@@ -56,7 +56,7 @@ class RequestServiceImplTest {
     }
 
     @Test
-    void getById_isUserInvalid_Exception() {
+    void findById_isUserInvalid_Exception() {
         assertThrows(NotFoundException.class, () -> requestService.findByUserIdAndRequestId(999L, createdRequestReturnDto.getId()));
     }
 

@@ -1,7 +1,6 @@
-package ru.practicum.shareit.item;
+package ru.practicum.shareit.item.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -9,7 +8,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.exceptions.NotFoundException;
-import ru.practicum.shareit.item.controller.ItemController;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.service.ItemService;
@@ -40,9 +38,8 @@ class ItemControllerTest {
     @MockBean
     private ItemService itemServiceMock;
 
-    @SneakyThrows
     @Test
-    void getItemById_itemIdIsCorrect_returnItem() {
+    void getItemById_itemIdIsCorrect_returnItem() throws Exception {
         ItemDto item = new ItemDto();
         item.setId(1L);
         item.setName("itemNameTest");
@@ -59,9 +56,8 @@ class ItemControllerTest {
         verify(itemServiceMock).findItemById(any(), any());
     }
 
-    @SneakyThrows
     @Test
-    void getItemById_itemIdIsIncorrect_returnItem() {
+    void getItemById_itemIdIsIncorrect_returnItem() throws Exception {
         ItemDto item = new ItemDto();
         item.setId(1L);
         item.setName("itemNameTest");
@@ -74,9 +70,8 @@ class ItemControllerTest {
         verify(itemServiceMock).findItemById(any(), any());
     }
 
-    @SneakyThrows
     @Test
-    void getAllByOwner_isCorrect() {
+    void getAllByOwner_isCorrect() throws Exception {
         ItemDto item = new ItemDto();
         item.setId(1L);
         item.setName("itemNameTest");
@@ -92,9 +87,8 @@ class ItemControllerTest {
                 .andExpect(content().json(objectMapper.writeValueAsString(List.of(item))));
     }
 
-    @SneakyThrows
     @Test
-    void create_itemIsValid_returnValid() {
+    void create_itemIsValid_returnValid() throws Exception {
         ItemDto item = new ItemDto();
         item.setId(1L);
         item.setAvailable(true);
@@ -116,9 +110,8 @@ class ItemControllerTest {
 
     }
 
-    @SneakyThrows
     @Test
-    void update() {
+    void update() throws Exception {
         ItemDto item = new ItemDto();
         item.setId(1L);
         item.setAvailable(true);
@@ -139,9 +132,8 @@ class ItemControllerTest {
         verify(itemServiceMock).update(any(), any(), any());
     }
 
-    @SneakyThrows
     @Test
-    void searchAvailableItem() {
+    void searchAvailableItem() throws Exception {
         ItemDto item = new ItemDto();
         item.setId(1L);
         item.setAvailable(true);
@@ -158,9 +150,8 @@ class ItemControllerTest {
         verify(itemServiceMock).findItemForRental(any());
     }
 
-    @SneakyThrows
     @Test
-    void createComment_isValid() {
+    void createComment_isValid() throws Exception {
         ItemDto item = new ItemDto();
         item.setId(1L);
         item.setAvailable(true);

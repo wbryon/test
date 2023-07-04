@@ -74,11 +74,6 @@ class ItemRepositoryTest {
         createdItem2 = itemRepository.save(item2);
     }
 
-//    @Test
-//    void getByOwnerId_isValid() {
-//        assertEquals(List.of(createdItem1), itemRepository.findByOwnerOrderByIdAsc(createdUser1.getId()));
-//    }
-
     @Test
     void getItemsByQuery_isValid() {
         assertEquals(List.of(createdItem2), itemRepository.findItemForRental("testItem2"));

@@ -1,7 +1,6 @@
 package ru.practicum.shareit.request;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -36,9 +35,8 @@ class RequestControllerTest {
     @MockBean
     private RequestService requestServiceMock;
 
-    @SneakyThrows
     @Test
-    void getById_requestIsCorrect_returnRequest() {
+    void shouldFindById_requestIsCorrect_returnRequest() throws Exception {
         RequestDto expected = new RequestDto();
         expected.setId(1L);
         expected.setDescription("description");
@@ -56,9 +54,8 @@ class RequestControllerTest {
         verify(requestServiceMock).findByUserIdAndRequestId(any(), any());
     }
 
-    @SneakyThrows
     @Test
-    void getById_requestIsInCorrect_returnNotfoundException() {
+    void shouldFindById_requestIsInCorrect_returnNotFoundException() throws Exception {
         Long requestId = 1L;
         Long userId = 1L;
         when(requestServiceMock.findByUserIdAndRequestId(userId, requestId)).thenThrow(NotFoundException.class);
@@ -71,9 +68,8 @@ class RequestControllerTest {
         verify(requestServiceMock).findByUserIdAndRequestId(userId, requestId);
     }
 
-    @SneakyThrows
     @Test
-    void getAllByRequestor_userIsCorrect_returnRequestList() {
+    void shouldGetAllByRequestor_userIsCorrect_returnRequestList() throws Exception {
         RequestDto expected = new RequestDto();
         expected.setId(1L);
         expected.setDescription("description");
@@ -89,9 +85,8 @@ class RequestControllerTest {
         verify(requestServiceMock).getAllRequestsByRequestor(1L);
     }
 
-    @SneakyThrows
     @Test
-    void getAll() {
+    void shouldGetAll() throws Exception {
         RequestDto expected = new RequestDto();
         expected.setId(1L);
         expected.setDescription("description");
@@ -109,9 +104,8 @@ class RequestControllerTest {
         verify(requestServiceMock).getAllRequests(1L, 0, 10);
     }
 
-    @SneakyThrows
     @Test
-    void create_requestIsValid_returnRequest() {
+    void shouldCreateRequestIsValid_returnRequest() throws Exception {
         RequestDto expected = new RequestDto();
         expected.setId(1L);
         expected.setDescription("description");
@@ -131,19 +125,4 @@ class RequestControllerTest {
         verify(requestServiceMock).create(any(), any());
     }
 
-//    @SneakyThrows
-//    @Test
-//    void createRequest_whenRequestIsInvalid_ValidationException() {
-//        RequestReturnDto expected = new RequestReturnDto();
-//        expected.setId(1L);
-//        expected.setDescription(null);
-//        expected.setCreated(LocalDateTime.now());
-//
-//        mockMvc.perform(post("/requests")
-//                        .header("X-Sharer-User-Id", 1L)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(expected)))
-//                .andExpect(status().isBadRequest());
-//        verify(requestServiceMock, never()).create(any(), any());
-//    }
 }

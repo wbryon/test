@@ -1,7 +1,6 @@
 package ru.practicum.shareit.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -35,9 +34,8 @@ class UserControllerTest {
     @MockBean
     private UserService userServiceMock;
 
-    @SneakyThrows
     @Test
-    void getById_UserFound_ReturnUser() {
+    void shouldGetById_UserFound_ReturnUser() throws Exception {
         UserDto user = new UserDto();
         user.setId(1L);
         user.setName("test");
@@ -53,9 +51,8 @@ class UserControllerTest {
         verify(userServiceMock).findUserDtoById(user.getId());
     }
 
-    @SneakyThrows
     @Test
-    void getById_UserNotFound_returnNotFoundException() {
+    void shouldGetById_UserNotFound_returnNotFoundException() throws Exception {
         UserDto user = new UserDto();
         user.setId(1L);
         user.setName("test");
@@ -68,9 +65,8 @@ class UserControllerTest {
 
     }
 
-    @SneakyThrows
     @Test
-    void updateUser_UserFound_ReturnOk() {
+    void shouldUpdateUser_UserFound_ReturnOk() throws Exception {
         UserDto user = new UserDto();
         user.setId(1L);
         user.setName("test");
@@ -88,9 +84,8 @@ class UserControllerTest {
 
     }
 
-    @SneakyThrows
     @Test
-    void updateUser_UserIsNotValid_returnValidationException() {
+    void shouldNotUpdateUser_UserIsNotValid_returnValidationException() throws Exception {
         UserDto user = new UserDto();
         user.setId(1L);
         user.setName("test");
@@ -105,9 +100,8 @@ class UserControllerTest {
         verify(userServiceMock).update(user);
     }
 
-    @SneakyThrows
     @Test
-    void getUsers() {
+    void shouldGetUsers() throws Exception {
         UserDto user = new UserDto();
         user.setId(1L);
         user.setName("test");
@@ -120,9 +114,8 @@ class UserControllerTest {
         verify(userServiceMock).getAllUsers();
     }
 
-    @SneakyThrows
     @Test
-    void addUser_UserValid_ReturnUser() {
+    void shouldAddUser_UserValid_ReturnUser() throws Exception {
         UserDto user = new UserDto();
         user.setId(1L);
         user.setName("test");
@@ -140,9 +133,8 @@ class UserControllerTest {
         verify(userServiceMock).create(user);
     }
 
-    @SneakyThrows
     @Test
-    void create_UserIsInvalid_ReturnValidationException() {
+    void shouldNotCreate_UserIsInvalid_ReturnValidationException() throws Exception {
         UserDto user = new UserDto();
         user.setId(1L);
         user.setName("test");
@@ -156,9 +148,8 @@ class UserControllerTest {
         verify(userServiceMock).create(user);
     }
 
-    @SneakyThrows
     @Test
-    void deleteById() {
+    void shouldDeleteById() throws Exception {
         UserDto user = new UserDto();
         user.setId(1L);
         user.setName("test");

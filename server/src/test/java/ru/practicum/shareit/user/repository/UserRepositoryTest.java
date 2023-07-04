@@ -28,12 +28,12 @@ class UserRepositoryTest {
     }
 
     @Test
-    void getByIdAndCheck_isValid() {
+    void shouldFindById() {
         assertEquals(user1.getName(), userRepository.findByUserId(createdUser1.getId()).getName());
     }
 
     @Test
-    void getByIdAndCheck_isInvalid() {
+    void shouldNotFindById() {
         assertThrows(NotFoundException.class, () -> userRepository.findByUserId(999L));
     }
 }
